@@ -93,22 +93,25 @@ void loop() {
         Serial.println(F("This sample only works with MIFARE Classic cards."));
         return;
     }
-
-    // In this sample we use the second sector,
-    // that is: sector #1, covering block #4 up to and including block #7
-    byte sector         = 1;
-    byte blockAddr      = 7;
+    
+    //int j = 6;
+    //for(int i = 31; i <= 63; i += 4){
+      
+      //j += 1;
+      
+    byte sector         = 2;
+    byte blockAddr      = 11;
     byte dataBlock[]    = {
         0xFF, 0xFF, 0xFF, 0xFF, //  1,  2,   3,  4,
         0xFF, 0xFF, 0xFF, 0x07, //  5,  6,   7,  8,
         0x80, 0x69, 0xFF, 0xFF, //  9, 10, 255, 12,
         0xFF, 0xFF, 0xFF, 0xFF  // 13, 14,  15, 16
     };
-    byte trailerBlock   = 7;
+    byte trailerBlock = 11;
     MFRC522::StatusCode status;
     byte buffer[18];
     byte size = sizeof(buffer);
-
+    
     // Authenticate using key A
     Serial.println(F("Authenticating using key A..."));
     status = (MFRC522::StatusCode) mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, trailerBlock, &key, &(mfrc522.uid));
@@ -168,7 +171,7 @@ void loop() {
         
     // Check that data in block is what we have written
     // by counting the number of bytes that are equal
-    Serial.println(F("Checking result..."));
+    /*Serial.println(F("Checking result..."));
     byte count = 0;
     for (byte i = 0; i < 16; i++) {
         // Compare buffer (= what we've read) with dataBlock (= what we've written)
@@ -187,10 +190,12 @@ void loop() {
     // Dump the sector data
     Serial.println(F("Current data in sector:"));
     mfrc522.PICC_DumpMifareClassicSectorToSerial(&(mfrc522.uid), &key, sector);
-    Serial.println();
-
+    Serial.println();*/
+    
+  //}
     // Halt PICC
     mfrc522.PICC_HaltA();
+  
     // Stop encryption on PCD
     mfrc522.PCD_StopCrypto1();
 }

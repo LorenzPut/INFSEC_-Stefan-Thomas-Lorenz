@@ -63,11 +63,11 @@ void loop() {
         
         Serial.setTimeout(20000L) ;     // wait until 20 seconds for input from serial
         // Ask personal data: Family name
-        Serial.println(F("Type Family name, ending with #"));
+        Serial.println(F("Type First name, ending with #"));
         len=Serial.readBytesUntil('#', (char *) buffer, 30) ; // read family name from serial
         for (byte i = len; i < 30; i++) buffer[i] = ' ';     // pad with spaces
         
-        block = 16;
+        block = 8;
         //Serial.println(F("Authenticating using key A..."));
         status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, block, &key, &(mfrc522.uid));
         if (status != MFRC522::STATUS_OK) {
@@ -86,7 +86,7 @@ void loop() {
 	}
         else Serial.println(F("MIFARE_Write() success: "));
 
-        block = 17;
+        block = 9;
         //Serial.println(F("Authenticating using key A..."));
         status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, block, &key, &(mfrc522.uid));
         if (status != MFRC522::STATUS_OK) {

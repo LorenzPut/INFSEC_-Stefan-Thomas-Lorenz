@@ -60,7 +60,7 @@ void setup() {
     SPI.begin();                // Init SPI bus
     mfrc522.PCD_Init();         // Init MFRC522 card
     Serial.println(F("Try the most used default keys to print block 0 to 63 of a MIFARE PICC."));
-    Serial.println("1.Read card \n2. Write to card \n3.Copy the data.");
+    Serial.println("1.Read card \n2.Write to card \n3.Copy the data.");
 
     for (byte i = 0; i < 6; i++) {
         key.keyByte[i] = 0xFF;
@@ -136,16 +136,25 @@ boolean try_key(MFRC522::MIFARE_Key *key)
         }
     }
     Serial.println();
+    
+    Serial.println("1.Read card \n2.Write to card \n3.Copy the data.");
 
     mfrc522.PICC_HaltA();       // Halt PICC
     mfrc522.PCD_StopCrypto1();  // Stop encryption on PCD
     return result;
+    
+    start();
 }
 
 /*
  * Main loop.
  */
 void loop() {
+  start();
+    
+}
+
+void start(){
   choice = Serial.read();
   
   if(choice == '1')
@@ -164,7 +173,6 @@ void loop() {
       Serial.println("Copying the data on to the new card");
       keuze3();
     }
-    
 }
 
 void keuze2(){ //Test waardes in blokken
@@ -186,7 +194,8 @@ void keuze2(){ //Test waardes in blokken
     
   }
   
-  
+  Serial.println("1.Read card \n2.Write to card \n3.Copy the data.");
+  start();
 }
 
 void keuze3(){ //Copy the data in the new card
@@ -259,7 +268,13 @@ Serial.println("Insert new card...");
     
         
      Serial.println("\n");
+     
   }
+  mfrc522.PICC_HaltA();       // Halt PICC
+  mfrc522.PCD_StopCrypto1();  // Stop encryption on PCD
+  
+  Serial.println("1.Read card \n2.Write to card \n3.Copy the data.");
+  start();
 }
 
 void keuze1(){ //Read card
