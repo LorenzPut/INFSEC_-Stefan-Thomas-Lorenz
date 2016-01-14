@@ -17,10 +17,12 @@ def end_read(signal,frame):
 # Hook the SIGINT
 signal.signal(signal.SIGINT, end_read)
 
+print "Place card please..."
+
 # Create an object of the class MFRC522
 MIFAREReader = MFRC522.MFRC522()
 
-# This loop keeps checking for chips. If one is near it will get the UID and aut                                     henticate
+# This loop keeps checking for chips. If one is near it will get the UID and authenticate
 while continue_reading:
 
     # Scan for cards
@@ -37,7 +39,7 @@ while continue_reading:
     if status == MIFAREReader.MI_OK:
 
         # Print UID
-        print "Card read UID: "+str(uid[0])+","+str(uid[1])+","+str(uid[2])+","+                                     str(uid[3])
+        print "Card read UID: "+str(uid[0])+","+str(uid[1])+","+str(uid[2])+","+str(uid[3])
 
         # This is the default key for authentication
         key = [0xFF,0xFF,0xFF,0xFF,0xFF,0xFF]
@@ -50,3 +52,20 @@ while continue_reading:
 
         # Stop
         MIFAREReader.MFRC522_StopCrypto1()
+
+        # wait card removed
+        print "--- Remove Card ---"
+        card_removed = False
+        card_removed_counter = 5
+
+        while not card_removed:
+            (status,TagType) = MIFAREReader.MFRC522_Request(MIFAREReader.PICC_REQIDL)
+            if status != MIFAREReader.MI_OK:
+                card_removed_counter = card_removed_counter-1
+                if card_removed_counter==0:
+                    card_removed = True
+            else:
+                card_removed_counter = 5
+
+        print "--- Card removed---"
+        print "Place card again please..."
